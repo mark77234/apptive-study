@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,16 +46,35 @@ class MainActivity : ComponentActivity() {
         setContent {
             ApptivestudyTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Professors(
-                        name = "이완직 교수님",
-                        now = 3,
-                        image = painterResource(id = R.drawable.leewanjig_professor),
-                        profileSize = 100,
-                        drawSize = 300,
-                        modifier = Modifier.padding(innerPadding),
+                    ProfessorList(
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ProfessorList(modifier: Modifier = Modifier){
+    val professors = List(100) {
+        "이완직 교수님" to painterResource(id = R.drawable.leewanjig_professor)
+    }
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ){
+        items(professors){ (name, image) ->
+            Professors(
+                name = name,
+                now = (1..10).random(),
+                image = image,
+                profileSize = 100,
+                drawSize = 300
+            )
         }
     }
 }
@@ -118,12 +139,6 @@ fun Professors(name: String, now: Int, image: Painter,profileSize: Int,drawSize:
 @Composable
 fun GreetingPreview() {
     ApptivestudyTheme {
-        Professors(
-            name = "이완직 교수님",
-            now = 3,
-            image = painterResource(id = R.drawable.leewanjig_professor),
-            profileSize = 100,
-            drawSize = 300
-        )
+        ProfessorList()
     }
 }
